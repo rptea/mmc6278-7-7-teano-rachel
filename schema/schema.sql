@@ -10,9 +10,14 @@ CREATE TABLE inventory (
 );
 
 -- Create the users table with
--- id that's primary key integer auto incrementing
--- username that's a 100 char varchar and unique
--- password that's a 200 char varchar
+CREATE TABLE users (
+  -- id that's primary key integer auto incrementing
+  id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  -- username that's a 100 char varchar and unique
+  username VARCHAR(100) NOT NULL UNIQUE,
+  -- password that's a 200 char varchar
+  password VARCHAR(200) NOT NULL
+);
 
 CREATE TABLE cart (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -23,4 +28,7 @@ CREATE TABLE cart (
     REFERENCES inventory (id)
     ON DELETE CASCADE
 -- add a foreign key constraint to user_id just like inventory_id
+  FOREIGN KEY (user_id) 
+    REFERENCES user (id)
+    ON DELETE CASCADE ON UPDATE CASCADE
 );
