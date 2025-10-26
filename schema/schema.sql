@@ -30,7 +30,7 @@ CREATE TABLE cart (
     ON DELETE CASCADE
 -- add a foreign key constraint to user_id just like inventory_id
   FOREIGN KEY (user_id) 
-    REFERENCES user (id)
+    REFERENCES users (id)
     ON DELETE CASCADE 
     ON UPDATE CASCADE
 );
