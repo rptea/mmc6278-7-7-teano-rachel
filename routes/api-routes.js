@@ -91,7 +91,7 @@ router
 // This route should create a new User
 router.post('/user', async (req, res) => {
   try{ 
-    const {username, password} = req.body
+    const { username, password } = req.body
     // if the username or password is not provided, return a 400 status
     if (!(username || !password))
       return res.status(400).send('must include username/password')
@@ -99,7 +99,7 @@ router.post('/user', async (req, res) => {
     const hash = await bcrypt.hash(password, 10)
     // then insert the username and hashed password into the users table
     await db.query(
-      `INSTERT INTO users (username, password) VALUES (?,?)`,
+      `INSERT INTO users (username, password) VALUES (?,?)`,
       [username, hash]
     )
   // and redirect the user to the /login page
