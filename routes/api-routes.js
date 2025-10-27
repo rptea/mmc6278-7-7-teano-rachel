@@ -91,7 +91,7 @@ router
 // This route should create a new User
 router.post('/user', async (req, res) => {
   try{ 
-    const { username, password } = req.body
+    const {username, password} = req.body
     // if the username or password is not provided, return a 400 status
     if (!(username || !password))
       return res.status(400).send('must include username/password')
@@ -99,18 +99,18 @@ router.post('/user', async (req, res) => {
     const hash = await bcrypt.hash(password, 10)
     // then insert the username and hashed password into the users table
     await db.query(
-      `INSERT INTO users (username, password) VALUES (?,?)`,
+      `INSTERT INTO users (username, password) VALUES (?,?)`,
       [username, hash]
     )
   // and redirect the user to the /login page
     return res.redirect('/login')
   } catch (err) {
       // if an error occurs with a code property equal to 'ER_DUP_ENTRY'
-    if (error.code === 'ER_DUP_ENTRY')
+    if (err.code === 'ER_DUP_ENTRY')
       // return a 409 status code (the user exists already)
       return res.status(409).send('User already exists')
       // for any other error, return a 500 status
-      return res.status(500).send('Error Creating User: ' + error.message || error.sqlMessage)
+      return res.status(500).send('Error Creating User: ' + err.message || err.sqlMessage)
     }
 })
 
@@ -136,14 +136,14 @@ router.post('/login', async (req, res) => {
   // If the password matches, set req.session.loggedIn to true
   req.session.isLoggedIn = true
   // set req.session.userId to the user's id
-  req.session.userId = userId
+  req.session.userId = user.id
   // call req.session.save and in the callback redirect to /
   req.session.save(() => res.redirect('/'))
 })
 
 router.get('/logout', async (req, res) => {
   // call req.session.destroy and in the callback redirect to /
-  req.session.destroy(() => res.redirect('/'))
+  return req.session.destroy(() => res.redirect('/'))
 })
 
 module.exports = router
