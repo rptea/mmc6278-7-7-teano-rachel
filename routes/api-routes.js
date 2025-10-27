@@ -99,7 +99,7 @@ router.post('/user', async (req, res) => {
     const hash = await bcrypt.hash(password, 10)
     // then insert the username and hashed password into the users table
     await db.query(
-      `INSTERT INTO users (username, password) VALUES (?,?)`,
+      `INSERT INTO users (username, password) VALUES (?,?)`,
       [username, hash]
     )
   // and redirect the user to the /login page
@@ -134,7 +134,7 @@ router.post('/login', async (req, res) => {
   if (!isCorrectPassword)
     return res.status(400).end()
   // If the password matches, set req.session.loggedIn to true
-  req.session.isLoggedIn = true
+  req.session.loggedIn = true
   // set req.session.userId to the user's id
   req.session.userId = user.id
   // call req.session.save and in the callback redirect to /
