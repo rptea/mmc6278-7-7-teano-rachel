@@ -91,9 +91,9 @@ router
 // This route should create a new User
 router.post('/user', async (req, res) => {
   try{ 
-    const { username, password } = req.body
+    const { username, password } = req.body || {};
     // if the username or password is not provided, return a 400 status
-    if (!(username || !password))
+    if (!username || !password)
       return res.status(400).send('must include username/password')
     // hash the password using bcrypt.hash and use 10 salt rounds
     const hash = await bcrypt.hash(password, 10)
@@ -106,7 +106,7 @@ router.post('/user', async (req, res) => {
     return res.redirect('/login')
   } catch (err) {
       // if an error occurs with a code property equal to 'ER_DUP_ENTRY'
-    if (err.code === 'ER_DUP_ENTRY')
+    if (err && err.code === 'ER_DUP_ENTRY')
       // return a 409 status code (the user exists already)
       return res.status(409).send('User already exists')
       // for any other error, return a 500 status
