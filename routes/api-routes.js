@@ -91,7 +91,7 @@ router
 // This route should create a new User
 router.post('/user', async (req, res) => {
   try{ 
-    const {username, password} = req.body
+    const { username, password } = req.body
     // if the username or password is not provided, return a 400 status
     if (!(username || !password))
       return res.status(400).send('must include username/password')
@@ -128,12 +128,12 @@ router.post('/login', async (req, res) => {
   )
   // If no user is found, return a 400 status code
   if (!user)
-    return res.status(400).send('must include username/password')
+    return res.status(400).send('User not found')
   // If the user is found, use bcrypt.compare to compare the password to the hash
   const isCorrectPassword = await bcrypt.compare(password, user.password)
   // If the password is wrong, return a 400 status code
   if (!isCorrectPassword)
-    return res.status(400).send('must include username/password')
+    return res.status(400).send('Incorrect password')
   // If the password matches, set req.session.loggedIn to true
   req.session.loggedIn = true
   // set req.session.userId to the user's id
