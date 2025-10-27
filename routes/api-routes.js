@@ -116,7 +116,8 @@ router.post('/user', async (req, res) => {
 
 // This route will log the user in and create the session
 router.post('/login', async (req, res) => {
-  const {username, password} = req.body
+  const username = req.body?.username
+  const password = req.body?.password
   // if the username or password is not provided, return a 400 status
   if (!username || !password)
     return res.status(400).send('must include username/password')
@@ -127,12 +128,12 @@ router.post('/login', async (req, res) => {
   )
   // If no user is found, return a 400 status code
   if (!user)
-    return res.status(400).end()
+    return res.status(400).send('must include username/password')
   // If the user is found, use bcrypt.compare to compare the password to the hash
   const isCorrectPassword = await bcrypt.compare(password, user.password)
   // If the password is wrong, return a 400 status code
   if (!isCorrectPassword)
-    return res.status(400).end()
+    return res.status(400).send('must include username/password')
   // If the password matches, set req.session.loggedIn to true
   req.session.loggedIn = true
   // set req.session.userId to the user's id
